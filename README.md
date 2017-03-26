@@ -1,5 +1,5 @@
 Projekt zaliczeniowy NSK
 
 Autor:Pawel Kusz
-Temat:System zdalnego zamykania systemow operacyjnych
+Temat:Zdalna konsole typu telnet.
 
