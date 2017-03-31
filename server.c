@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdlib.h>
 #include <sys/socket.h>
+#include <sys/wait.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
 #include <signal.h>
@@ -11,6 +12,8 @@
 
 #define MAXLINE 4096
 #define LISTENQ 10
+
+void sig_chld(int signo);
 
 int main(int argc, char *argv[])
 {
@@ -55,6 +58,7 @@ int main(int argc, char *argv[])
 
     fprintf(stdout, "Server is running ... \n");
 
+    signal(SIGCHLD,sig_chld);
 
     for ( ; ; ) {
         clilen = sizeof(cliaddr);
@@ -81,3 +85,16 @@ int main(int argc, char *argv[])
 
     return 0;
 }
+
+void sig_chld(int signo)
+{
+	(void) signo;
+	pid_t pid;
+	int stat;
+
+	while ( (pid = waitpid(-1,&stat,WNOHANG)) > 0)
+		printf("Client process [%d] terminated",pid);
+
+	return;
+}
+
