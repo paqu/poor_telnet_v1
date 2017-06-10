@@ -62,18 +62,13 @@ pid_t ptyFork(int *masterFd)
         _exit(EXIT_FAILURE);
     }
 
-    if (dup2(slaveFd, STDIN_FILENO) != STDIN_FILENO) {
-        fprintf(stderr,"stdin dup2 error");
-        _exit(EXIT_FAILURE);
-    }
-
-    if (dup2(slaveFd, STDOUT_FILENO) != STDIN_FILENO) {
+    if (dup2(slaveFd, STDOUT_FILENO) != STDOUT_FILENO) {
         fprintf(stderr,"stdout dup2 error");
         _exit(EXIT_FAILURE);
     }
 
-    if (dup2(slaveFd, STDERR_FILENO) != STDIN_FILENO) {
-        fprintf(stderr,"stdout dup2 error");
+    if (dup2(slaveFd, STDERR_FILENO) != STDERR_FILENO) {
+        fprintf(stderr,"stderr dup2 error");
         _exit(EXIT_FAILURE);
     }
 
