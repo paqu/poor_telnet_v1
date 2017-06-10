@@ -15,10 +15,9 @@ int ptyMasterOpen(char *slaveName, size_t snLen)
 
     /* Open pty master */
     masterFd =  posix_openpt(O_RDWR | O_NOCTTY);
-    if (masterFd == -1) {
-        fprintf(stderr, "Error %d on posix_openpt()\n", err);
+    if (masterFd == -1)
         return -1;
-    }
+
     /* grant access to the slave psueudoterminal */
     ret = grantpt(masterFd);
     if (ret == -1) {
