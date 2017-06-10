@@ -63,7 +63,6 @@ int main(int argc, char *argv[])
         }
 
         if (fds[0].revents & POLLIN) {
-            printf("Pass command\n");
             memset(command, 0, MAXLINE);
             fgets(command, MAXLINE, stdin);
             write(sockfd, command, MAXLINE);
@@ -71,11 +70,15 @@ int main(int argc, char *argv[])
 
         if (fds[1].revents & POLLIN) {
             memset(output, 0, MAXLINE);
-            read(sockfd, output, MAXLINE);
+            ret = read(sockfd, output, MAXLINE);
+            if (ret == 0) {
+                fprintf(stdout, "Server disconnected");
+                break;
+            }
             write(STDOUT_FILENO, output, MAXLINE);
         }
     }
 
     close(sockfd);
-    exit(0);
+    exit(EXIT_SUCCESS);
 }
